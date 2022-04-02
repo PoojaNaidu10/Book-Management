@@ -12,7 +12,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const mongoose = require('mongoose')
 
 mongoose.connect("mongodb+srv://Pooja1010:JfnE38uRPOS0bajB@cluster0.zsuwb.mongodb.net/Project-Three", 
-{useNewUrlParser: true, useUnifiedTopology: true})
+{useNewUrlParser: true, useUnifiedTopology: true,useFindAndModify: false,useCreateIndex: true})
     .then(() => console.log('MongoDb is connected....'))
     .catch(err => console.log(err))
 

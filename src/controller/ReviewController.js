@@ -36,10 +36,13 @@ const isBodyRequestValid = function (requestBody) {
     
     try{ let data=req.body 
      if(!isBodyRequestValid(data)){return res.status(400).send({status:false,msg:"invalid data"})}
+     if (!isValidObjectId(data.bookId))
+        return res.status(400).send({ status: false, msg:"Please Provide valid bookId" })
      const {reviewedBy,reviewedAt,rating,review,bookId}=data
      let bookid=req.params.bookId
      if(!isValid(bookid)){return res.status(400).send({status:false,msg:"please enter bookId"})}
      if(!isValidObjectId(bookid)){return res.status(400).send({status:false,msg:"invalid bookId"})}
+     if(!isValidString(reviewedBy)){return res.status(400).send({status:false,msg:"please enter reviewedBy"})}
      let checkId=await BookModel.findById(bookid)
      
      if(!checkId){return res.status(400).send({status:false,msg:"book with this id not found"})}
@@ -49,11 +52,12 @@ const isBodyRequestValid = function (requestBody) {
      
  
  
-     if(!isValid(reviewedAt)){return res.status(400).send({status:false,msg:"please enter reviewed time"})}
+     if(!isValid(reviewedAt)){return res.status(400).send({status:false,msg:"please enter reviewed "})}
      if(!isValidDate(reviewedAt)){return res.status(400).send({status:false,msg:"please provide date in YYYY-MM-DD format"})}
+     if(!isValid(rating)){return res.status(400).send({status:false,msg:"please provide rating"})}
      if(!isvalidNumber(rating)){return res.status(400).send({status:false,msg:"please give valid rating"})}
      
-     if (!([1, 2, 3, 4, 5].includes(Number(rating)))) {
+     if (!([1, 2, 3, 4, 5].includes(rating))) {
         res.status(400).send({ status: false, msg: "Rating should be from [1,2,3,4,5] this values" })
         return
        }
@@ -84,6 +88,10 @@ const updateReview = async function(req,res){
         let bookId = req.params.bookId
         let reviewId = req.params.reviewId
         let requestBody = req.body
+        if (!isValidObjectId(bookId))
+        return res.status(400).send({ status: false, msg:"Please Provide valid bookId" })
+        if (!isValidObjectId(reviewId))
+        return res.status(400).send({ status: false, msg:"Please Provide valid reviewId" })
 
         let book = await BookModel.findOne({ _id : bookId, isDeleted : false})
        if (!book){

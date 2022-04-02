@@ -81,10 +81,7 @@ const CreateUser =async function(req, res){
        return
     }
 
-    // if(!(/^(?:(?:\+|0{0,2})91(\s*[\-]\s*)?|[0]?)?[6789]\d{9}$/.test(password))){
-    //     res.status(400).send({status:false, msg:"Password should be between 8-15"})
-    //     return
-    // }
+    
 
     if (password.length<8 || password.length>15) {
         return res.status(400).send({status:false, msg:"Password should be between 8-15"})
